@@ -64,4 +64,60 @@ export class Users {
       return null;
     }
   }
+  async updateUser(
+    id: number,
+    email?: string,
+    firstName?: string,
+    lastName?: string,
+    password?: string
+  ) {
+    try {
+      let updateUserQuery = "UPDATE users SET ";
+      const params: any[] = [id];
+
+      // Append params
+      if (email) {
+        updateUserQuery += "email = $2, ";
+        params.push(email);
+      }
+      if (firstName) {
+        updateUserQuery += "first_name = $3, ";
+        params.push(firstName);
+      }
+      if (lastName) {
+        updateUserQuery += "last_name = $4, ";
+        params.push(lastName);
+      }
+      if (password) {
+        const passwordHash = await bcrypt.hash(password, 10);
+        updateUserQuery += "password = $5, ";
+        params.push(passwordHash);
+      }
+
+      updateUserQuery = updateUserQuery.trim().replace(/, $/, "");
+
+      // Complete the query by adding the condition to update the specific user
+      updateUserQuery +=
+        " WHERE id = $1 RETURNING id, email, first_name, last_name";
+
+      // Execute the query with the parameters
+      const result = await this.pool.query(updateUserQuery, params);
+
+      // Check if the user was found and updated
+      if (result.rows.length === 0) {
+        throw new Error("User not found");
+      }
+
+      // Return the updated user information
+      return {
+        id: result.rows[0].id,
+        email: result.rows[0].email,
+        firstName: result.rows[0].first_name,
+        lastName: result.rows[0].last_name,
+      };
+    } catch (error) {
+      console.error("Failed to update user: ", error);
+      return null;
+    }
+  }
 }
