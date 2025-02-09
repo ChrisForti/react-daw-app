@@ -120,4 +120,26 @@ export class Users {
       return null;
     }
   }
+  async deleteUser(id: number) {
+    if (!id) {
+      throw new Error("user id is missing");
+    }
+    if (!Number.isInteger(id) || id < 1) {
+      throw new Error("user id must be a number");
+    }
+
+    try {
+      const result = await this.pool.query(
+        "DELETE FROM users WHERE id = $1 RETURNING id",
+        [id]
+      );
+      if (result.rows.length === 0) {
+        throw new Error("User not found");
+      }
+      return { id: result.rows[0].id };
+    } catch (error) {
+      console.error("Failed to delete user: ", error);
+      return null;
+    }
+  }
 }
