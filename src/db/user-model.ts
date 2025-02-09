@@ -9,6 +9,60 @@ export class Users {
     assert(!!pool, "Database connection is required");
     this.pool = pool;
   }
+  async userLogin(email: string, password: string) {
+    // Validate email and password
+    if (!email) {
+      throw new Error("Email is missing");
+    }
+    const emailRx =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (!email.match(emailRx)) {
+      throw new Error("Invalid email format");
+    }
+    if (!password) {
+      throw new Error("Password is missing");
+    }
+    if (password.length < 8) {
+      throw new Error("Minimum password length is 8 characters");
+    }
+
+    try {
+      // Get user from the database by email
+      const result = await this.pool.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+
+      if (result.rows.length === 0) {
+        throw new Error("User not found");
+      }
+
+      // Get the user
+      const user = result.rows[0];
+
+      // Verify the password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new Error("Credentials invalid");
+      }
+
+      if (!user.email_verified) {
+        throw new Error("Email not verified");
+      }
+
+      // Return the user and token if login is successful
+      return {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+      };
+    } catch (err) {
+      console.error("Login failed: ", err);
+      return null;
+    }
+  }
+
   async createUser(
     firstName: string,
     lastName: string,
