@@ -9,6 +9,7 @@ export class Users {
     assert(!!pool, "Database connection is required");
     this.pool = pool;
   }
+
   async userLogin(email: string, password: string) {
     // Validate email and password
     if (!email) {
@@ -118,6 +119,25 @@ export class Users {
       return null;
     }
   }
+
+  async getUserByEmail(email: string) {
+    const result = await this.pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      throw new Error("User not found");
+    }
+    return {
+      id: result.rows[0].id,
+      email: result.rows[0].email,
+      firstName: result.rows[0].first_name,
+      lastName: result.rows[0].last_name,
+      passwordHash: result.rows[0].password,
+    };
+  }
+
   async updateUser(
     id: number,
     email?: string,
