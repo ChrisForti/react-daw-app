@@ -13,8 +13,6 @@
   "author": "Chris forti",
   "license": "ISC",
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.3",
-    "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "pg": "^8.13.1",
