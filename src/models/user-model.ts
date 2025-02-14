@@ -2,6 +2,15 @@ import assert from "assert";
 import pg from "pg";
 import bcrypt from "bcrypt";
 
+type UserModel = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  passwordHash: string;
+  createdAt: Date;
+};
+
 export class Users {
   private pool: pg.Pool;
 
