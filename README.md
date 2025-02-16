@@ -18,7 +18,6 @@ This is a React TypeScript application designed to help you store and organize y
 
 - React
 - TypeScript
-- Tailwind CSS (optional for styling)
 - FL Studio API (for integration)
 
 ## Getting Started
