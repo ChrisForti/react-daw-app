@@ -38,7 +38,3 @@ This is a React TypeScript application designed to help you store and organize y
 1. Upload your DAW or WAV files to the app.
 2. Add metadata tags like song title, artist name, genre, etc.
 3. Use the FL Studio integration for further editing or playback.
-
-## Contributing
-
-Contributions are welcome! Feel free to fork the repository and submit pull requests.
