@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "../db/db.js";
+import { db } from "./db/db.js";
 import type { Request, Response } from "express";
 // import bcrypt from "bcrypt";
 import {
