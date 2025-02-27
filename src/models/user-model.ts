@@ -203,6 +203,35 @@ export class Users {
       return null;
     }
   }
+
+  async getUserById(id: number) {
+    try {
+      if (!id) {
+        throw new Error("user id is missing");
+      }
+      if (!Number.isInteger(id) || id < 1) {
+        throw new Error("user id must be a number");
+      }
+
+      const result = await this.pool.query(
+        "SELECT * FROM users WHERE id = $1",
+        [id]
+      );
+      if (result.rows.length === 0) {
+        throw new Error("User not found");
+      }
+      return {
+        id: result.rows[0].id,
+        email: result.rows[0].email,
+        firstName: result.rows[0].first_name,
+        lastName: result.rows[0].last_name,
+      };
+    } catch (error) {
+      console.error("Failed to get user by ID: ", error);
+      return null;
+    }
+  }
+
   async deleteUser(id: number) {
     if (!id) {
       throw new Error("user id is missing");
