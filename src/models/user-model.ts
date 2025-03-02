@@ -1,6 +1,6 @@
-import assert from "assert";
 import pg from "pg";
 import bcrypt from "bcrypt";
+import assert from "assert";
 
 type UserModel = {
   id: number;
