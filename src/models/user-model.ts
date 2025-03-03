@@ -19,6 +19,20 @@ export class Users {
     this.pool = pool;
   }
 
+  async updatePassword(userIdFromToken: string, hashedPassword: string) {
+    if (!userIdFromToken || !hashedPassword) {
+      // needs work TODO
+      throw new Error("Reset token and new password are required");
+    }
+    try {
+      const sql = "UPDATE users SET password = $1 WHERE id = $2";
+      const params = [hashedPassword, userIdFromToken];
+      await this.pool.query(sql, params);
+    } catch (error) {
+      console.error("Error updating password:", error);
+    }
+  }
+
   async userLogin(email: string, password: string) {
     // Validate email and password
     if (!email) {
