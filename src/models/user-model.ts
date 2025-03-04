@@ -21,7 +21,7 @@ export class Users {
 
   async updatePassword(userIdFromToken: string, hashedPassword: string) {
     if (!userIdFromToken || !hashedPassword) {
-      // needs work TODO
+      // needs work TODO What work???
       throw new Error("Reset token and new password are required");
     }
     try {
