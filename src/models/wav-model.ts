@@ -19,10 +19,10 @@ export class Wavs {
     const sql =
       "INSERT INTO snippets (title, expiration_date, user_id, content) VALUES ($1, $2, $3, $4) RETURNING id";
     const params = [wavId, fileName, duration, format, metadata];
-    const newSnippet = await this.pool.query(sql, params);
+    const newWav = await this.pool.query(sql, params);
 
     return {
-      id: newSnippet.rows[0].id,
+      id: newWav.rows[0].id,
       wavId,
       fileName,
       duration,
