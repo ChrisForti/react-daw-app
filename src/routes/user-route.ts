@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "./db/db.js";
+import { db } from "../db/db.js";
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import {
@@ -7,11 +7,11 @@ import {
   validateEmail,
   validatePassword,
   validateId,
-} from "./models/validators.js";
-import { scope } from "./models/token-model.js";
-import { ensureAuthenticate } from "./middleware/auth.js";
-import { nodemailerUser } from "./constants.js";
-import { transporter } from "./mailer/mailer.js";
+} from "../models/validators.js";
+import { scope } from "../models/token-model.js";
+import { ensureAuthenticate } from "../middleware/auth.js";
+import { nodemailerUser } from "../constants.js";
+import { transporter } from "../mailer/mailer.js";
 
 const userRouter = Router();
 
