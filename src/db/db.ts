@@ -11,5 +11,6 @@ export const db = {
   Models: {
     Tokens: new Tokens(pool),
     Users: new Users(pool),
+    Wavs: new Wavs(pool),
   },
 };
