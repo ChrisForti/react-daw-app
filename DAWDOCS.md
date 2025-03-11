@@ -81,3 +81,43 @@ DELETE  /audio/:id         -> Delete an audio file
 POST    /wave/process      -> Apply audio processing specifically for WAV
 GET     /wave/:id/metadata -> Get metadata for a WAV file
 ```
+
+# concerning the sql table
+
+Creating an SQL statement for metadata in a WAV model involves understanding what kind of metadata you want to store. WAV files typically have metadata such as title, artist, album, duration, sample rate, etc. An SQL table for storing this metadata might look like this:
+
+```sql
+CREATE TABLE wav_metadata (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(255) NOT NULL,
+    title VARCHAR(255),
+    artist VARCHAR(255),
+    album VARCHAR(255),
+    genre VARCHAR(100),
+    duration INT,  -- Duration in seconds
+    sample_rate INT,  -- Sample rate in Hz
+    bit_depth INT,  -- Bit depth of the audio
+    file_size INT,  -- File size in bytes
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_modified_date DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    comments TEXT
+);
+```
+
+This table includes fields that are commonly associated with audio files:
+
+- `id`: An auto-incrementing primary key to uniquely identify each record.
+- `file_name`: The name of the WAV file.
+- `title`: Title of the audio file.
+- `artist`: Artist of the audio.
+- `album`: Album name.
+- `genre`: Genre of the audio.
+- `duration`: The duration of the audio in seconds.
+- `sample_rate`: The sample rate of the audio file (in Hz).
+- `bit_depth`: The bit depth, indicating audio quality.
+- `file_size`: Size of the file in bytes.
+- `creation_date`: Timestamp indicating when the record was created.
+- `last_modified_date`: Timestamp for when the record was last modified.
+- `comments`: Any additional comments or notes regarding the file.
+
+You can customize or add any additional fields that are relevant to your specific use case.

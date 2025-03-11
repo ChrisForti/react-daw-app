@@ -17,7 +17,7 @@ export class Wavs {
     metadata: string
   ) {
     const sql =
-      "INSERT INTO snippets (title, expiration_date, user_id, content) VALUES ($1, $2, $3, $4) RETURNING id";
+      "INSERT INTO Wavs (wav_id, file_name, duration, format, meta_data) VALUES ($1, $2, $3, $4) RETURNING id";
     const params = [wavId, fileName, duration, format, metadata];
     const newWav = await this.pool.query(sql, params);
 

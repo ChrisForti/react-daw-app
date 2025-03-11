@@ -2,6 +2,7 @@ import pg from "pg";
 import { Users } from "../models/user-model.js";
 import { Tokens } from "../models/token-model.js";
 import { connectionString } from "../constants.js";
+import { Wavs } from "../models/wav-model.js";
 
 const { Pool } = pg;
 
