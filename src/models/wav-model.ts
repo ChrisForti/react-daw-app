@@ -34,4 +34,20 @@ export class Wavs {
     console.error(error);
     return null;
   }
+
+  async deleteWavByWavId(wavId: number, userId: number) {
+    const sql = "DELETE FROM snippets WHERE id = $1 and user_id = $2";
+
+    try {
+      const result = await this.pool.query(sql, [wavId, userId]);
+      if (result.rowCount === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
 }
