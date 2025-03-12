@@ -18,10 +18,7 @@ wavRouter.post("/", ensureAuthenticate, createWav);
 wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the model
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
-async function createWav(
-  req: Request,
-  res: Response
-): Promise<Response<any, Record<string, any>> | undefined> {
+async function createWav(req: Request, res: Response): Promise<any> {
   const { wavId, fileName, duration, format, metaData } =
     req.body as wavControllerBodyParams;
   if (!req.user) {

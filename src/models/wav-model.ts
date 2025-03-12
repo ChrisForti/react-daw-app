@@ -35,6 +35,59 @@ export class Wavs {
     return null;
   }
 
+  async getWavById(wavId: number) {
+    try {
+      const sql = "SELECT * FROM snippets WHERE wav_id = $1";
+
+      const result = await this.pool.query(sql, [wavId]);
+
+      return result.rows[0];
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async updateWav(
+    // need to
+    wavId: string,
+    title: string,
+    content: string,
+    expirationDate: string
+  ) {
+    try {
+      // Retrieve the existing wav to get default field values if needed
+      const wavQuery = `
+      SELECT title, content, expiration_date 
+      FROM wavs 
+      WHERE wav_id = $1`;
+
+      // Then process the query plus any default field values
+      const wav = (await this.pool.query(wavQuery, [wavId])).rows[0];
+      const sql = `
+      UPDATE wavs
+      SET title = $1, content = $2, expiration_date = $3
+      WHERE wav_id = $4`;
+
+      const args = [
+        wavId,
+        title ?? wav.title,
+        content ?? wav.content,
+        expirationDate ?? wav.expiration_date,
+      ];
+
+      const updateResult = await this.pool.query(sql, args);
+      if (updateResult.rows.length === 0) {
+        console.error("wav not found");
+      } else {
+        return updateResult.rows[0];
+      }
+    } catch (error) {
+      console.error(error);
+      return "wav updated successfully";
+    }
+  }
+
   async deleteWavByWavId(wavId: number, userId: number) {
     const sql = "DELETE FROM snippets WHERE id = $1 and user_id = $2";
 
