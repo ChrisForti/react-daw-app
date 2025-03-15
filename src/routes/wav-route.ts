@@ -58,7 +58,7 @@ async function createWav(req: Request, res: Response): Promise<any> {
 async function updateWav(req: Request, res: Response) {
   const { snippetId } = req.params;
 
-  const { wavId, fileName, duration, format, metaData } =
+  const { wavId, fileName, duration, format } =
     req.body as wavControllerBodyParams;
 
   try {
@@ -68,8 +68,7 @@ async function updateWav(req: Request, res: Response) {
       wavId,
       fileName,
       duration,
-      format,
-      metaData
+      format
     );
 
     res.json(updateWav.rows);
