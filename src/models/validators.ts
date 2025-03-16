@@ -79,3 +79,19 @@ export function validateExperationDate(expirationDate: string) {
     throw new Error("expiration date is missing");
   }
 }
+
+// Nered to write validator functions for wav files
+
+// - `id`: An auto-incrementing primary key to uniquely identify each record.
+// - `file_name`: The name of the WAV file.
+// - `title`: Title of the audio file.
+// - `artist`: Artist of the audio.
+// - `album`: Album name.
+// - `genre`: Genre of the audio.
+// - `duration`: The duration of the audio in seconds.
+// - `sample_rate`: The sample rate of the audio file (in Hz).
+// - `bit_depth`: The bit depth, indicating audio quality.
+// - `file_size`: Size of the file in bytes.
+// - `creation_date`: Timestamp indicating when the record was created.
+// - `last_modified_date`: Timestamp for when the record was last modified.
+// - `comments`: Any additional comments or notes regarding the file.
