@@ -121,3 +121,38 @@ This table includes fields that are commonly associated with audio files:
 - `comments`: Any additional comments or notes regarding the file.
 
 You can customize or add any additional fields that are relevant to your specific use case.
+
+# Arguments for file seperation i.e. wav-files, and wav-metadata
+
+When designing a relational database for storing WAV files and their metadata, it's generally a good idea to separate metadata and the actual audio files into different tables. Here's a possible approach:
+
+Metadata Table (e.g., wavs_metadata):
+
+Columns:
+id (Primary Key)
+title
+artist
+album
+duration
+bit_rate
+... (other metadata fields)
+Audio Files Table (e.g., wavs_files):
+
+Columns:
+id (Primary Key, Foreign Key referencing wavs_metadata)
+file_data (BLOB)
+file_size
+file_format (optional, if necessary)
+Reasons for Separation:
+
+Efficiency: Keeping large binary data separate can improve query performance, especially when fetching metadata without needing the file itself.
+Maintainability: Isolates logic and makes it easier to manage changes or migrations.
+Flexibility: Facilitates handling of updates or changes to file storage without impacting metadata.
+If you're dealing with large audio files, consider storing them in a file storage system (e.g., AWS S3) and keep only the file reference in the database. This further separates concerns and leverages the strengths of database and file storage systems.
+
+Example with External Storage:
+
+Audio Files Table:
+id (Primary Key, Foreign Key referencing wavs_metadata)
+file_url (URL or path to the file in the storage system)
+This design allows your API to efficiently access and manage both metadata and audio files, providing scalability and clarity.
