@@ -2,7 +2,7 @@ import pg from "pg";
 import { Users } from "../models/user-model.js";
 import { Tokens } from "../models/token-model.js";
 import { connectionString } from "../constants.js";
-import { Wavs } from "../models/wav-model.js";
+import { WavFile } from "../models/wav-model.js";
 
 const { Pool } = pg;
 
@@ -12,6 +12,6 @@ export const db = {
   Models: {
     Tokens: new Tokens(pool),
     Users: new Users(pool),
-    Wavs: new Wavs(pool),
+    Wavs: new WavFile(pool),
   },
 };

@@ -1,7 +1,7 @@
 import type pg from "pg";
 import assert from "assert";
 
-export class Wavs {
+export class WavFile {
   private pool: pg.Pool;
 
   constructor(pool: pg.Pool) {
@@ -17,7 +17,7 @@ export class Wavs {
     metadata: string
   ) {
     const sql =
-      "INSERT INTO Wavs (wav_id, file_name, duration, format, meta_data) VALUES ($1, $2, $3, $4) RETURNING id";
+      "INSERT INTO Wav-file (wav_id, file_name, duration, format, meta_data) VALUES ($1, $2, $3, $4) RETURNING id";
     const params = [wavId, fileName, duration, format, metadata];
     const newWav = await this.pool.query(sql, params);
 

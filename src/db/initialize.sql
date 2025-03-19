@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users(
     email_verified boolean NOT NULL DEFAULT FALSE,
 );
 
-CREATE TABLE IF NOT EXISTS wav_files(
+CREATE TABLE IF NOT EXISTS wav_file(
     wav_id serial PRIMARY KEY,
     file_name varchar(255) NOT NULL,
     creation_date integer DEFAULT extract(epoch FROM now()) NOT NULL,
