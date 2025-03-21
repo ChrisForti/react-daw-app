@@ -1,8 +1,8 @@
-import  WavMetadata pg  from "pg";
+import  type pg  from "pg";
 import assert from "assert";
 
 
-// export WavMetadata WavMetadata = {
+// export type WavMetadataType = {
 //     id: number;
 //     fileName: string;
 //     title?: string;
