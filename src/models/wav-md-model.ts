@@ -2,21 +2,21 @@ import  type pg  from "pg";
 import assert from "assert";
 
 
-// export type WavMetadataType = {
-//     id: number;
-//     fileName: string;
-//     title?: string;
-//     artist?: string;
-//     album?: string;
-//     genre?: string;
-//     duration?: number;
-//     sampleRate?: number;
-//     bitDepth?: number;
-//     fileSize?: number;
-//     creationDate?: Date;
-//     lastModifiedDate?: Date;
-//     comments?: string;
-//   };
+export type WavMetadataType = {
+    id: number;
+    fileName: string;
+    title?: string;
+    artist?: string;
+    album?: string;
+    genre?: string;
+    duration?: number;
+    sampleRate?: number;
+    bitDepth?: number;
+    fileSize?: number;
+    creationDate?: Date;
+    lastModifiedDate?: Date;
+    comments?: string;
+  };
 
 export class WavMetadata{
     private pool: pg.Pool
