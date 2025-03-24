@@ -36,7 +36,7 @@ async function createWav(req: Request, res: Response): Promise<any> {
     // validateId(userId);
 
     const snippet = await db.Models.Wavs.createWav(
-      wavId,
+      wavId as number,
       fileName,
       duration,
       format,
