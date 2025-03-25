@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "../db/db.js";
 import type { Request, Response } from "express";
 import { ensureAuthenticate } from "../middleware/auth.js";
+import { WavFile } from "../models/wav-model.js";
 // import bcrypt from "bcrypt";
 
 const wavRouter = Router();
@@ -11,7 +12,6 @@ type wavControllerBodyParams = {
   fileName: string;
   duration: number;
   format: string;
-  metaData: string;
 };
 
 wavRouter.post("/", ensureAuthenticate, createWav);
@@ -19,7 +19,7 @@ wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
 async function createWav(req: Request, res: Response): Promise<any> {
-  const { id, fileName, duration, format, metaData } =
+  const { id, fileName, duration, format } =
     req.body as wavControllerBodyParams;
   if (!req.user) {
     return res.status(401).json({ message: "unauthorized" });
@@ -39,8 +39,7 @@ async function createWav(req: Request, res: Response): Promise<any> {
       id,
       fileName,
       duration,
-      format,
-      metaData
+      format
     );
     res.status(201).json({ snippet });
   } catch (error) {
@@ -56,26 +55,24 @@ async function createWav(req: Request, res: Response): Promise<any> {
 }
 
 async function updateWav(req: Request, res: Response) {
-  const { snippetId } = req.params;
-
   const { id, fileName, duration, format } =
     req.body as wavControllerBodyParams;
 
   try {
-    // validateSnippetId(snippetId);
+    // validations
 
     const updateWav = await db.Models.Wavs.updateWav(
-      id as number,
+      id,
       fileName,
       duration as number,
       format
     );
 
     res.json(updateWav.rows);
-    res.status(200).send("snippet updated successfully");
+    res.status(200).send("wav file updated successfully");
   } catch (error) {
-    console.error("error updating snippet:", error);
-    res.status(500).send("failed to update snippet");
+    console.error("error updating wav file:", error);
+    res.status(500).send("failed to update wav file");
   }
 }
 
@@ -84,17 +81,17 @@ async function deleteWav(req: Request, res: Response) {
   const userId = req.user!.id;
 
   try {
-    //   validateSnippetId(snippetId);
+    //   validations
     const deleteWav = await db.Models.Wavs.deleteWavByWavId(wavId, userId);
 
     if (!deleteWav) {
-      res.status(404).json({ message: "snippet not found" });
+      res.status(404).json({ message: "wav file not found" });
     } else {
-      res.json({ message: "snippet successfully deleted" });
+      res.json({ message: "wav file successfully deleted" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "failed to delete snippet" });
+    res.status(500).json({ message: "failed to delete wav file" });
   }
 }
 

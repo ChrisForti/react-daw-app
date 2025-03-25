@@ -80,7 +80,7 @@ export function validateExperationDate(expirationDate: string) {
   }
 }
 
-// Nered to write validator functions for wav files
+// Need to write validator functions for wav files and metadata files
 
 // - `id`: An auto-incrementing primary key to uniquely identify each record.
 // - `file_name`: The name of the WAV file.

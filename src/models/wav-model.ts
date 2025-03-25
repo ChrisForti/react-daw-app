@@ -13,12 +13,11 @@ export class WavFile {
     wavId: number,
     fileName: string,
     duration: number,
-    format: string,
-    metadata: string
+    format: string
   ) {
     const sql =
       "INSERT INTO Wav-file (wav_id, file_name, duration, format, meta_data) VALUES ($1, $2, $3, $4) RETURNING id";
-    const params = [wavId, fileName, duration, format, metadata];
+    const params = [wavId, fileName, duration, format];
     const newWav = await this.pool.query(sql, params);
 
     return {
@@ -27,7 +26,6 @@ export class WavFile {
       fileName,
       duration,
       format,
-      metadata,
     };
   }
   catch(error: unknown) {
@@ -37,7 +35,7 @@ export class WavFile {
 
   async getWavById(wavId: number) {
     try {
-      const sql = "SELECT * FROM snippets WHERE wav_id = $1";
+      const sql = "SELECT * FROM wavs WHERE wav_id = $1";
 
       const result = await this.pool.query(sql, [wavId]);
 
@@ -49,11 +47,10 @@ export class WavFile {
   }
 
   async updateWav(
-    // need to work on
-    wavId: string,
-    title: string,
-    content: string,
-    expirationDate: string
+    id: number,
+    fileName: string,
+    duration: number,
+    format: string
   ) {
     try {
       // Retrieve the existing wav to get default field values if needed
@@ -63,17 +60,17 @@ export class WavFile {
       WHERE wav_id = $1`;
 
       // Then process the query plus any default field values
-      const wav = (await this.pool.query(wavQuery, [wavId])).rows[0];
+      const wav = (await this.pool.query(wavQuery, [id])).rows[0];
       const sql = `
       UPDATE wavs
       SET title = $1, content = $2, expiration_date = $3
       WHERE wav_id = $4`;
 
       const args = [
-        wavId,
-        title ?? wav.title,
-        content ?? wav.content,
-        expirationDate ?? wav.expiration_date,
+        id,
+        fileName ?? wav.fileName,
+        duration ?? wav.duration,
+        format ?? wav.format,
       ];
 
       const updateResult = await this.pool.query(sql, args);
