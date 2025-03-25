@@ -1,7 +1,8 @@
 // src/routes/wav-metadata-routes.ts
 import express from "express";
 import { Pool } from "pg";
-import { WavMetadata, WavMetadataType } from "../models/wav-md-model.js";
+import { WavMetadata } from "../models/wav-md-model.js";
+import type { WavMetadataType } from "../models/wav-md-model.js";
 
 const router = express.Router();
 const pool = new Pool({

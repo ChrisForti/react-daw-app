@@ -7,7 +7,7 @@ import { ensureAuthenticate } from "../middleware/auth.js";
 const wavRouter = Router();
 
 type wavControllerBodyParams = {
-  wavId: number;
+  id: number;
   fileName: string;
   duration: number;
   format: string;
@@ -19,7 +19,7 @@ wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
 async function createWav(req: Request, res: Response): Promise<any> {
-  const { wavId, fileName, duration, format, metaData } =
+  const { id, fileName, duration, format, metaData } =
     req.body as wavControllerBodyParams;
   if (!req.user) {
     return res.status(401).json({ message: "unauthorized" });
@@ -36,7 +36,7 @@ async function createWav(req: Request, res: Response): Promise<any> {
     // validateId(userId);
 
     const snippet = await db.Models.Wavs.createWav(
-      wavId as number,
+      id,
       fileName,
       duration,
       format,
@@ -58,16 +58,16 @@ async function createWav(req: Request, res: Response): Promise<any> {
 async function updateWav(req: Request, res: Response) {
   const { snippetId } = req.params;
 
-  const { wavId, fileName, duration, format } =
+  const { id, fileName, duration, format } =
     req.body as wavControllerBodyParams;
 
   try {
     // validateSnippetId(snippetId);
 
     const updateWav = await db.Models.Wavs.updateWav(
-      wavId,
+      id as number,
       fileName,
-      duration,
+      duration as number,
       format
     );
 
