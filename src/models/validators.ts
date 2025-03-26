@@ -2,15 +2,6 @@
 const emailRx =
   "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
 
-/** validate that a given string is a valid email address if the input is invalid. If the input is invalid,
- *  throws an error with the descprition
- * @param {string} email - the email is valid
- * @throws {Error} if email is valid
- * */
-
-// All validation logic should only be what db cares about, and
-// need to be wrapped in a try catchblock when used.
-
 // user validations
 
 export function validateEmail(email: string) {
@@ -49,36 +40,47 @@ export function validateId(userId: number) {
   }
 }
 
-// snippet validations
-export function validateSnippetId(snippetId?: string) {
-  if (!snippetId) {
-    throw new Error("snippet id is missing");
+// wav validations
+export function validateWavId(wavId?: number) {
+  if (!wavId) {
+    throw new Error("Wav id is missing");
   }
-  if (!snippetId || typeof snippetId !== "string") {
-    throw new Error("Invalid snippet ID");
-  }
-}
-
-export function validateTitle(title: string) {
-  if (!title) {
-    throw new Error("Title is missing");
+  if (!Number.isInteger(wavId) || wavId < 1) {
+    throw new Error("Invalid wav id");
   }
 }
 
-export function validateContent(content: string) {
-  if (!content) {
-    throw new Error("content is missing");
+export function validateFileName(fileName: string) {
+  if (!fileName) {
+    throw new Error("file name is missing");
   }
 }
 
-export function validateExperationDate(expirationDate: string) {
-  if (!expirationDate) {
+export function validateDuration(duration: string) {
+  if (!duration) {
+    throw new Error("duration is missing");
+  }
+}
+
+export function validateFormat(format: string) {
+  if (!format) {
     throw new Error("expiration date is missing");
   }
-  if (expirationDate && isNaN(parseInt(expirationDate))) {
+  if (format && isNaN(parseInt(format))) {
     throw new Error("expiration date is missing");
   }
 }
+
+// wav metadata validations
+
+// export function validateWavId(wavId?: number) {
+//   if (!wavId) {
+//     throw new Error("Wav id is missing");
+//   }
+//   if (!Number.isInteger(wavId) || wavId < 1) {
+//     throw new Error("Invalid wav id");
+//   }
+// }
 
 // Need to write validator functions for wav files and metadata files
 
