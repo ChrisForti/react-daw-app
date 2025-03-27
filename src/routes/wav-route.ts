@@ -3,12 +3,18 @@ import { db } from "../db/db.js";
 import type { Request, Response } from "express";
 import { ensureAuthenticate } from "../middleware/auth.js";
 import { WavFile } from "../models/wav-model.js";
+import {
+  validateDuration,
+  validateFileName,
+  validateFormat,
+  validateWavId,
+} from "../models/validators.js";
 // import bcrypt from "bcrypt";
 
 const wavRouter = Router();
 
 type wavControllerBodyParams = {
-  id: number;
+  wavId: number;
   fileName: string;
   duration: number;
   format: string;
@@ -19,24 +25,23 @@ wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
 async function createWav(req: Request, res: Response): Promise<any> {
-  const { id, fileName, duration, format } =
+  const { wavId, fileName, duration, format } =
     req.body as wavControllerBodyParams;
   if (!req.user) {
     return res.status(401).json({ message: "unauthorized" });
   }
-  const userId = req.user.id;
 
   try {
-    // validateTitle(title);
+    validateWavId(wavId);
 
-    // validateContent(content);
+    validateFileName(fileName);
 
-    // validateExperationDate(expirationDate);
+    validateDuration(duration);
 
-    // validateId(userId);
+    validateFormat(format);
 
     const snippet = await db.Models.Wavs.createWav(
-      id,
+      wavId,
       fileName,
       duration,
       format
@@ -55,16 +60,22 @@ async function createWav(req: Request, res: Response): Promise<any> {
 }
 
 async function updateWav(req: Request, res: Response) {
-  const { id, fileName, duration, format } =
+  const { wavId, fileName, duration, format } =
     req.body as wavControllerBodyParams;
 
   try {
-    // validations
+    validateWavId(wavId);
+
+    validateFileName(fileName);
+
+    validateDuration(duration);
+
+    validateFormat(format);
 
     const updateWav = await db.Models.Wavs.updateWav(
-      id,
+      wavId,
       fileName,
-      duration as number,
+      duration,
       format
     );
 

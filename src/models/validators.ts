@@ -56,8 +56,8 @@ export function validateFileName(fileName: string) {
   }
 }
 
-export function validateDuration(duration: string) {
-  if (!duration) {
+export function validateDuration(duration: number) {
+  if (!Number.isInteger(duration) || duration < 1) {
     throw new Error("duration is missing");
   }
 }
