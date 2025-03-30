@@ -81,23 +81,23 @@ export class WavFile {
       }
     } catch (error) {
       console.error(error);
-      return "wav updated successfully";
+      return "Wav updated successfully.";
     }
   }
 
   async deleteWavByWavId(wavId: number, userId: number) {
-    const sql = "DELETE FROM snippets WHERE id = $1 and user_id = $2";
+    const sql = "DELETE FROM wavs WHERE id = $1 and user_id = $2";
 
     try {
       const result = await this.pool.query(sql, [wavId, userId]);
       if (result.rowCount === 0) {
-        return false;
+        return null;
       } else {
-        return true;
+        return "Wav deleted successfully.";
       }
     } catch (error) {
       console.error(error);
-      return false;
+      return null;
     }
   }
 }

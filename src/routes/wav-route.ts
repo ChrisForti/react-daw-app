@@ -108,4 +108,4 @@ async function deleteWav(req: Request, res: Response) {
 
 export { wavRouter };
 
-// TODO start with imports, then write validator functions, then routes.
+// TODO finish CRUD operations.
