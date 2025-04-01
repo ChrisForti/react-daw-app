@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "../db/db.js";
 import type { Request, Response } from "express";
 import { ensureAuthenticate } from "../middleware/auth.js";
-import { WavFile } from "../models/wav-model.js";
+// import { WavFile } from "../models/wav-model.js";
 import {
   validateDuration,
   validateFileName,
@@ -40,24 +40,51 @@ async function createWav(req: Request, res: Response): Promise<any> {
 
     validateFormat(format);
 
-    const snippet = await db.Models.Wavs.createWav(
+    const newWav = await db.Models.Wavs.createWav(
       wavId,
       fileName,
       duration,
       format
     );
-    res.status(201).json({ snippet });
+    res.status(201).json({ newWav });
   } catch (error) {
     console.error("error creating wav file:", error);
     if (error instanceof Error) {
       if ("code" in error && error.code) {
-        res.status(400).json({ message: "invalid user id" });
+        res.status(400).json({ message: "invalid wav id" });
       } else {
         res.status(500).json({ message: "failed to create wav file" });
       }
     }
   }
 }
+
+// async function getWavById(
+//   req: Request,
+//   res: Response
+// ): Promise<null | undefined> {
+//   const { wavId, fileName } = req.body as wavControllerBodyParams;
+//   //   const wavId = req.params.wavId;
+
+//   try {
+//     validateWavId(wavId);
+//     validateFileName(fileName);
+
+//     if (!req.params.wavId) {
+//       res.status(400).json({ message: "User ID is required" });
+//       return;
+//     }
+//     const user = await db.Models.Wavs.getWavById(wavId);
+//     res.status(200).json(user);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(400).json({ message: error.message });
+//     } else {
+//       res.status(500).json({ message: "Failed to get wav" });
+//     }
+//     return null;
+//   }
+// }
 
 async function updateWav(req: Request, res: Response) {
   const { wavId, fileName, duration, format } =
