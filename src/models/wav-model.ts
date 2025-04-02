@@ -13,11 +13,12 @@ export class WavFile {
     wavId: number,
     fileName: string,
     duration: number,
-    format: string
+    format: string,
+    creationDate: number
   ) {
     const sql =
-      "INSERT INTO Wav-file (wav_id, file_name, duration, format, meta_data) VALUES ($1, $2, $3, $4) RETURNING id";
-    const params = [wavId, fileName, duration, format];
+      "INSERT INTO Wav-file (wav_id, file_name, duration, format, creation_date) VALUES ($1, $2, $3, $4, 5$) RETURNING id";
+    const params = [wavId, fileName, duration, format, creationDate];
     const newWav = await this.pool.query(sql, params);
 
     return {
@@ -26,6 +27,7 @@ export class WavFile {
       fileName,
       duration,
       format,
+      creationDate,
     };
   }
   catch(error: unknown) {
@@ -55,7 +57,7 @@ export class WavFile {
     try {
       // Retrieve the existing wav to get default field values if needed
       const wavQuery = `
-      SELECT title, content, expiration_date 
+      SELECT file_name, duration, format
       FROM wavs 
       WHERE wav_id = $1`;
 
@@ -63,7 +65,7 @@ export class WavFile {
       const wav = (await this.pool.query(wavQuery, [id])).rows[0];
       const sql = `
       UPDATE wavs
-      SET title = $1, content = $2, expiration_date = $3
+      SET file_name = $1, duration = $2, format = $3
       WHERE wav_id = $4`;
 
       const args = [
@@ -86,7 +88,7 @@ export class WavFile {
   }
 
   async deleteWavByWavId(wavId: number, userId: number) {
-    const sql = "DELETE FROM wavs WHERE id = $1 and user_id = $2";
+    const sql = "DELETE FROM wavs WHERE wav_id = $1 and user_id = $2";
 
     try {
       const result = await this.pool.query(sql, [wavId, userId]);

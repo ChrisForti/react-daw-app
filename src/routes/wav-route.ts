@@ -21,6 +21,7 @@ type wavControllerBodyParams = {
 };
 
 wavRouter.post("/", ensureAuthenticate, createWav);
+wavRouter.get("/", ensureAuthenticate, getWavById);
 wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the model
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
@@ -59,32 +60,26 @@ async function createWav(req: Request, res: Response): Promise<any> {
   }
 }
 
-// async function getWavById(
-//   req: Request,
-//   res: Response
-// ): Promise<null | undefined> {
-//   const { wavId, fileName } = req.body as wavControllerBodyParams;
-//   //   const wavId = req.params.wavId;
+async function getWavById(req: Request, res: Response): Promise<void> {
+  const wavId = req.params.wavId;
 
-//   try {
-//     validateWavId(wavId);
-//     validateFileName(fileName);
+  try {
+    validateWavId(Number(wavId));
 
-//     if (!req.params.wavId) {
-//       res.status(400).json({ message: "User ID is required" });
-//       return;
-//     }
-//     const user = await db.Models.Wavs.getWavById(wavId);
-//     res.status(200).json(user);
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       res.status(400).json({ message: error.message });
-//     } else {
-//       res.status(500).json({ message: "Failed to get wav" });
-//     }
-//     return null;
-//   }
-// }
+    if (!req.params.wavId) {
+      res.status(400).json({ message: "User ID is required" });
+      return;
+    }
+    const user = await db.Models.Wavs.getWavById(Number(wavId));
+    res.status(200).json(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Failed to get wav" });
+    }
+  }
+}
 
 async function updateWav(req: Request, res: Response) {
   const { wavId, fileName, duration, format } =
