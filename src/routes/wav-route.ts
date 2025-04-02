@@ -9,7 +9,6 @@ import {
   validateFormat,
   validateWavId,
 } from "../models/validators.js";
-// import bcrypt from "bcrypt";
 
 const wavRouter = Router();
 
