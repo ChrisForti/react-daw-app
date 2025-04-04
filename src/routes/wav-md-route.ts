@@ -49,16 +49,6 @@ async function createWavMetadata(req: Request, res: Response): Promise<void> {
     }
   }
 }
-// // Route to create new WAV metadata
-// router.post("/wav-metadata", async (req, res) => {
-//   try {
-//     const metadata: WavMetadataType = req.body;
-//     const result = await wavMetadataModel.createWavMetadata(metadata);
-//     res.status(201).json(result);
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// });
 
 // // Route to update existing WAV metadata
 // router.put("/wav-metadata/:id", async (req, res) => {

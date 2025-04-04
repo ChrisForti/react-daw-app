@@ -15,6 +15,7 @@ export class WavFile {
     duration: number,
     format: string,
     creationDate: number
+    // need a file for data TODO
   ) {
     const sql =
       "INSERT INTO Wav-file (wav_id, file_name, duration, format, creation_date) VALUES ($1, $2, $3, $4, 5$) RETURNING id";
