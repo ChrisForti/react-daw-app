@@ -1,5 +1,6 @@
 import type pg from "pg";
 import assert from "assert";
+import { watchFile } from "fs";
 
 export class WavFile {
   private pool: pg.Pool;
@@ -14,12 +15,13 @@ export class WavFile {
     fileName: string,
     duration: number,
     format: string,
-    creationDate: number
+    creationDate: number,
+    wavFile: string
     // need a file for data TODO
   ) {
     const sql =
-      "INSERT INTO Wav-file (wav_id, file_name, duration, format, creation_date) VALUES ($1, $2, $3, $4, 5$) RETURNING id";
-    const params = [wavId, fileName, duration, format, creationDate];
+      "INSERT INTO wavs (wav_id, file_name, duration, format, creation_date, wav_file) VALUES ($1, $2, $3, $4, 5$, 6$) RETURNING id";
+    const params = [wavId, fileName, duration, format, creationDate, wavFile];
     const newWav = await this.pool.query(sql, params);
 
     return {
@@ -29,6 +31,7 @@ export class WavFile {
       duration,
       format,
       creationDate,
+      wavFile,
     };
   }
   catch(error: unknown) {
@@ -53,12 +56,13 @@ export class WavFile {
     id: number,
     fileName: string,
     duration: number,
-    format: string
+    format: string,
+    wavFile: string
   ) {
     try {
       // Retrieve the existing wav to get default field values if needed
       const wavQuery = `
-      SELECT file_name, duration, format
+      SELECT file_name, duration, format, wav_file
       FROM wavs 
       WHERE wav_id = $1`;
 
@@ -66,14 +70,15 @@ export class WavFile {
       const wav = (await this.pool.query(wavQuery, [id])).rows[0];
       const sql = `
       UPDATE wavs
-      SET file_name = $1, duration = $2, format = $3
-      WHERE wav_id = $4`;
+      SET file_name = $1, duration = $2, format = $3, wav_file = 4$
+      WHERE wav_id = $5`;
 
       const args = [
         id,
         fileName ?? wav.fileName,
         duration ?? wav.duration,
         format ?? wav.format,
+        wavFile ?? wav.watchFile,
       ];
 
       const updateResult = await this.pool.query(sql, args);

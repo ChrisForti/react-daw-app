@@ -9,6 +9,7 @@ import {
   validateFormat,
   validateWavId,
 } from "../models/validators.js";
+import { WavFile } from "../models/wav-model.js";
 
 const wavRouter = Router();
 
@@ -18,6 +19,7 @@ type wavControllerBodyParams = {
   duration: number;
   format: string;
   creationDate: number;
+  wavFile: string;
 };
 
 wavRouter.post("/", ensureAuthenticate, createWav);
@@ -26,7 +28,7 @@ wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
 async function createWav(req: Request, res: Response): Promise<any> {
-  const { wavId, fileName, duration, format, creationDate } =
+  const { wavId, fileName, duration, format, creationDate, wavFile } =
     req.body as wavControllerBodyParams;
   if (!req.user) {
     return res.status(401).json({ message: "unauthorized" });
@@ -46,7 +48,8 @@ async function createWav(req: Request, res: Response): Promise<any> {
       fileName,
       duration,
       format,
-      creationDate
+      creationDate,
+      wavFile
     );
     res.status(201).json({ newWav });
   } catch (error) {
@@ -83,7 +86,7 @@ async function getWavById(req: Request, res: Response): Promise<void> {
 }
 
 async function updateWav(req: Request, res: Response) {
-  const { wavId, fileName, duration, format } =
+  const { wavId, fileName, duration, format, wavFile } =
     req.body as wavControllerBodyParams;
 
   try {
@@ -99,7 +102,8 @@ async function updateWav(req: Request, res: Response) {
       wavId,
       fileName,
       duration,
-      format
+      format,
+      wavFile
     );
 
     res.json(updateWav.rows);

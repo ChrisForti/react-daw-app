@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS wav_file(
     duration integer NOT NULL,
     -- user_id bigint NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     format text NOT NULL,
-    data bytea NOT NULL
+    wav_file bytea NOT NULL
 );
 
