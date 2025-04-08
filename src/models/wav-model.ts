@@ -52,6 +52,25 @@ export class WavFile {
     }
   }
 
+  async getAllWavFilesByUserId(userId: number) {
+    if (userId === null || userId === undefined) {
+      throw new Error("userId is missing");
+    }
+    if (typeof userId !== "number") {
+      userId = parseInt(userId as string);
+    }
+    try {
+      const sql = "SELECT * FROM wavs WHERE user_id = $1";
+
+      const result = await this.pool.query(sql, [userId]);
+
+      return result.rows;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   async updateWav(
     id: number,
     fileName: string,

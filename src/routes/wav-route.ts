@@ -8,6 +8,7 @@ import {
   validateFileName,
   validateFormat,
   validateWavId,
+  validateId,
 } from "../models/validators.js";
 import { WavFile } from "../models/wav-model.js";
 
@@ -24,6 +25,7 @@ type wavControllerBodyParams = {
 
 wavRouter.post("/", ensureAuthenticate, createWav);
 wavRouter.get("/", ensureAuthenticate, getWavById);
+wavRouter.get("/", ensureAuthenticate, getAllWavFilesByUserId);
 wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the model
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
@@ -81,6 +83,33 @@ async function getWavById(req: Request, res: Response): Promise<void> {
       res.status(400).json({ message: error.message });
     } else {
       res.status(500).json({ message: "Failed to get wav" });
+    }
+  }
+}
+
+async function getAllWavFilesByUserId(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const userId = req.user!.id;
+
+  try {
+    validateId(userId);
+
+    const wavs = await db.Models.Wavs.getAllWavFilesByUserId(userId);
+    if (!wavs || wavs.length === 0) {
+      res.status(404).json({ message: "No wav files found for this user" });
+      return;
+    }
+
+    res.json(wavs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "failed to retrieve wavs" });
+    if (error instanceof Error && error.message === "Snippets not found") {
+      res.status(404).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Failed to retrieve snippets" });
     }
   }
 }
