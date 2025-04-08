@@ -15,6 +15,7 @@ import { WavFile } from "../models/wav-model.js";
 const wavRouter = Router();
 
 type wavControllerBodyParams = {
+  userId: number;
   wavId: number;
   fileName: string;
   duration: number;
@@ -106,10 +107,10 @@ async function getAllWavFilesByUserId(
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "failed to retrieve wavs" });
-    if (error instanceof Error && error.message === "Snippets not found") {
+    if (error instanceof Error && error.message === "wavs not found") {
       res.status(404).json({ message: error.message });
     } else {
-      res.status(500).json({ message: "Failed to retrieve snippets" });
+      res.status(500).json({ message: "Failed to retrieve wavs" });
     }
   }
 }
