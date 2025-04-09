@@ -156,3 +156,7 @@ Audio Files Table:
 id (Primary Key, Foreign Key referencing wavs_metadata)
 file_url (URL or path to the file in the storage system)
 This design allows your API to efficiently access and manage both metadata and audio files, providing scalability and clarity.
+
+### curl
+
+BODY='{"email":"st8razed@gmail.com","firstName":"chris","lastName":"forti","password":"password"}'

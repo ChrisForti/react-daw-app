@@ -8,7 +8,8 @@
     "migrate-up": "source .env && migrate -path ./migrations -database $DSN up",
     "migrate-down": "source .env && migrate -path ./migrations -database $DSN down",
     "migrate-force": "source .env && migrate -path ./migrations -database $DSN force",
-    "psql": "psql -U postgres -h localhost"
+    "psql": "psql -U postgres -h localhost",
+    "dev": "nodemon run start"
   },
   "author": "Chris forti",
   "license": "ISC",
