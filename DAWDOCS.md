@@ -159,4 +159,6 @@ This design allows your API to efficiently access and manage both metadata and a
 
 ### curl
 
-BODY='{"email":"st8razed@gmail.com","firstName":"chris","lastName":"forti","password":"password"}'
+- `BODY='{"email":"st8razed@gmail.com","firstName":"chris","lastName":"forti","password":"password"}'`
+
+- `curl -d "$BODY" -X POST localhost:3000/users -H 'Content-Type: application/json'`
