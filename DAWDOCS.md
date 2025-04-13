@@ -120,8 +120,6 @@ This table includes fields that are commonly associated with audio files:
 - `last_modified_date`: Timestamp for when the record was last modified.
 - `comments`: Any additional comments or notes regarding the file.
 
-You can customize or add any additional fields that are relevant to your specific use case.
-
 # Arguments for file seperation i.e. wav-files, and wav-metadata
 
 When designing a relational database for storing WAV files and their metadata, it's generally a good idea to separate metadata and the actual audio files into different tables. Here's a possible approach:

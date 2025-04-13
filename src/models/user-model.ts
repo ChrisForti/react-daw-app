@@ -117,13 +117,13 @@ export class Users {
       }
 
       const sql =
-        "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, created_at";
-      const params = [firstName, lastName, email, passwordHash];
-      const client = await this.pool.query(sql, params);
+        "INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, created_at";
+      const values = [firstName, lastName, email, passwordHash];
+      const result = await this.pool.query(sql, values);
 
       // create user to return
       return {
-        id: client.rows[0].id,
+        id: result.rows[0].id,
         firstName,
         lastName,
         email,
