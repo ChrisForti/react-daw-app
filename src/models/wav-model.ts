@@ -1,6 +1,5 @@
 import type pg from "pg";
 import assert from "assert";
-import { watchFile } from "fs";
 
 export class WavFile {
   private pool: pg.Pool;

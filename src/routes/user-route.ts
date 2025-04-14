@@ -16,30 +16,38 @@ import { transporter } from "../mailer/mailer.js";
 const userRouter = Router();
 
 userRouter.post("/", createUser);
-userRouter.get("/", ensureAuthenticate, getUserById); // authenticate still
 userRouter.post("/login", loginUser);
+userRouter.get("/", ensureAuthenticate, getUserById); // authenticate still
 userRouter.put("/", ensureAuthenticate, updateUser);
 userRouter.delete("/", ensureAuthenticate, deleteUser);
 userRouter.post("/reset", sendResetEmail);
 userRouter.put("/reset", updatePassword);
 
 async function createUser(req: Request, res: Response) {
+  console.log("Request body:", req.body);
+  if (!req.body) {
+    // check to ensure req.body is not undefined
+    res.status(400).json({ message: "Request body is missing" });
+    return;
+  }
   const { email, firstName, lastName, password } = req.body;
 
   try {
-    validateName(firstName, lastName);
     validateEmail(email);
+
+    validateName(firstName, lastName);
+
     validatePassword(password);
 
     const newUser = await db.Models.Users.createUser(
-      email,
       firstName,
       lastName,
+      email,
       password
     );
     res.status(201).json(newUser); // 201 = created newUser
-  } catch (err) {
-    if (err instanceof Error) {
+  } catch (error) {
+    if (error instanceof Error) {
       res.status(400).json({ message: "Bad request" }); // More specific pattern
     } else {
       res.status(500).json({ message: "Failed to create user" });

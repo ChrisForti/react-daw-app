@@ -25,7 +25,7 @@ type wavControllerBodyParams = {
 };
 
 wavRouter.post("/", ensureAuthenticate, createWav);
-wavRouter.get("/", ensureAuthenticate, getWavById);
+wavRouter.get("/", ensureAuthenticate, getWavById); // probably dont need ensure TODO think about endpoints.
 wavRouter.get("/", ensureAuthenticate, getAllWavFilesByUserId);
 wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the model
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
