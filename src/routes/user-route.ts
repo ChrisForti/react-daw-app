@@ -55,7 +55,8 @@ async function createUser(req: Request, res: Response) {
   }
 }
 
-async function loginUser(req: Request, res: Response): Promise<any> {
+async function loginUser(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const { email, password } = req.body;
 
   try {
@@ -65,13 +66,15 @@ async function loginUser(req: Request, res: Response): Promise<any> {
     const user = await db.Models.Users.getUserByEmail(email);
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      res.status(401).json({ message: "Invalid email or password" });
+      return;
     }
 
     const verifiedPassword = await bcrypt.compare(password, user.passwordHash);
 
     if (!verifiedPassword) {
-      return res.status(401).json({ message: "Credentials invalid" });
+      res.status(401).json({ message: "Credentials invalid" });
+      return;
     }
 
     const plaintext = await db.Models.Tokens.generateAuthenticationToken(
@@ -88,6 +91,7 @@ async function loginUser(req: Request, res: Response): Promise<any> {
 }
 
 async function getUserById(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const userId = req.user!.id;
 
   try {
@@ -109,6 +113,7 @@ async function getUserById(req: Request, res: Response) {
 }
 
 async function updateUser(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const userId = req.user!.id;
   const { email, firstName, lastName, password } = req.body;
 
@@ -141,6 +146,7 @@ async function updateUser(req: Request, res: Response) {
 }
 
 async function deleteUser(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const userId = req.user!.id;
 
   try {
@@ -156,7 +162,8 @@ async function deleteUser(req: Request, res: Response) {
   }
 }
 
-async function sendResetEmail(req: Request, res: Response): Promise<any> {
+async function sendResetEmail(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const email = req.body.email;
   try {
     validateEmail(email);
@@ -170,18 +177,18 @@ async function sendResetEmail(req: Request, res: Response): Promise<any> {
     const emailTemplate = {
       from: `"Snippet Box - No Reply" <${nodemailerUser}>`, // sender address
       to: email, // recipient
-      subject: "Password Reset - Snippet Box", // subject line
+      subject: "Password Reset - Daw app", // subject line
       text: `We have recieved a request to reset your password.\n\nTo reset your password send a PUT request with your token and new password to /users/reset\n\nYour token is: ${resetToken}\n\nIf you did not make this request, you can safely ignore this email.\n\nSincerely,\nSnippet Box Team`,
       // html:
     };
 
     const result = await transporter.sendMail(emailTemplate);
     if (!result) {
-      return res
-        .status(500)
-        .json({ message: "Server failed to process request" });
+      res.status(500).json({ message: "Server failed to process request" });
+      return;
     }
-    return res.status(202).json({ message: "Email sent successfully" });
+    res.status(202).json({ message: "Email sent successfully" });
+    return;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error);
@@ -192,7 +199,8 @@ async function sendResetEmail(req: Request, res: Response): Promise<any> {
   }
 }
 
-async function updatePassword(req: Request, res: Response): Promise<any> {
+async function updatePassword(req: Request, res: Response) {
+  console.log("Request body:", req.body);
   const { token, password } = req.body;
 
   // checks for presence of user id, and reset token
@@ -210,7 +218,8 @@ async function updatePassword(req: Request, res: Response): Promise<any> {
 
     // checks if the user Id matches the id, and token sent.
     if (!user) {
-      return res.status(400).json({ message: "Invalid reset token or user" });
+      res.status(400).json({ message: "Invalid reset token or user" });
+      return;
     }
 
     // hashes new password
@@ -219,10 +228,12 @@ async function updatePassword(req: Request, res: Response): Promise<any> {
     // Update user password in the database
     await db.Models.Users.updatePassword(user.id, hashedPassword);
 
-    return res.status(200).json({ message: "Password updated successfully" });
+    res.status(200).json({ message: "Password updated successfully" });
+    return;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to update password" });
+    res.status(500).json({ message: "Failed to update password" });
+    return;
   }
 }
 
