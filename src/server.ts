@@ -2,11 +2,14 @@ import express from "express";
 import "dotenv/config";
 import userRouter from "./routes/user-route.js";
 import { rootRouter } from "./root.js";
+import { authenticate } from "./middleware/auth.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(authenticate);
 
 app.use("/", rootRouter);
 app.use("/users", userRouter);
