@@ -58,13 +58,18 @@ export class Tokens {
     const params = [hash, expiry, scope];
 
     // Execute the query
-    const result = await this.pool.query(sql, params);
+    try {
+      const result = await this.pool.query(sql, params);
 
-    // Return user data if found, otherwise return null
-    if (result.rows.length > 0) {
-      return result.rows[0];
-    } else {
-      return null;
+      // Return user data if found, otherwise return null
+      if (result.rows.length > 0) {
+        return result.rows[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error querying token:", error);
+      throw error;
     }
   }
 }

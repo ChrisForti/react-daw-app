@@ -53,11 +53,13 @@ export function ensureAuthenticate(
   req: Request,
   res: Response,
   next: NextFunction
-): void {
+) {
+  console.log("req.user: ", req.user);
   if (!req.user) {
     res.status(401).json({ error: "Unauthorized" });
+    return;
   }
-  return next();
+  next();
 }
 
 // access db in railway and add <scope text not null>
