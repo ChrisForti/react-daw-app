@@ -56,11 +56,13 @@ async function createUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
-  console.log("Request body:", req.body);
   const { email, password } = req.body;
+
+  console.log("Request body:", req.body);
 
   try {
     validateEmail(email);
+
     validatePassword(password);
 
     const user = await db.Models.Users.getUserByEmail(email);
@@ -69,6 +71,8 @@ async function loginUser(req: Request, res: Response) {
       res.status(401).json({ message: "Invalid email or password" });
       return;
     }
+    // Debugging: Log retrieved user
+    console.log("Retrieved user:", user);
 
     const verifiedPassword = await bcrypt.compare(password, user.passwordHash);
 

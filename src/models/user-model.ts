@@ -148,7 +148,7 @@ export class Users {
       email: result.rows[0].email,
       firstName: result.rows[0].first_name,
       lastName: result.rows[0].last_name,
-      passwordHash: result.rows[0].password,
+      passwordHash: result.rows[0].password_hash,
     };
   }
 
