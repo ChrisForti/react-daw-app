@@ -155,8 +155,14 @@ id (Primary Key, Foreign Key referencing wavs_metadata)
 file_url (URL or path to the file in the storage system)
 This design allows your API to efficiently access and manage both metadata and audio files, providing scalability and clarity.
 
-### curl
+### curl commands for wav files
 
-- `BODY='{"email":"st8razed@gmail.com","firstName":"chris","lastName":"forti","password":"password"}'`
+- storing a wav
 
-- `curl -d "$BODY" -X POST localhost:3000/users -H 'Content-Type: application/json'`
+  - curl -X POST http://localhost:3000/api/wavs \
+    -H "Content-Type: multipart/form-data" \
+    -F "wavId=1" \
+    -F "fileName=Yahuha.wav" \
+    -F "duration=3:44" \
+    -F "format=wav" \
+    -F "wavFile=@./Yahuha.wav"
