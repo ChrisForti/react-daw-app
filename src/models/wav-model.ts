@@ -9,28 +9,18 @@ export class WavFile {
     this.pool = pool;
   }
 
-  async createWav(
-    wavId: number,
-    fileName: string,
-    duration: number,
-    format: string,
-    creationDate: number,
-    wavFile: string
-    // need a file for data TODO
-  ) {
+  async createWav(duration: number, format: string) {
     const sql =
-      "INSERT INTO wavs (wav_id, file_name, duration, format, creation_date, wav_file) VALUES ($1, $2, $3, $4, 5$, 6$) RETURNING id";
-    const params = [wavId, fileName, duration, format, creationDate, wavFile];
-    const newWav = await this.pool.query(sql, params);
+      "INSERT INTO wavs ( file_name, duration, format, creation_date, wav_file) VALUES ($1, $2, $3, extract(epoch FROM now()), $4) RETURNING id, creation_date, wav_file";
+    const params = [duration, format];
+    const result = await this.pool.query(sql, params);
 
     return {
-      id: newWav.rows[0].id,
-      wavId,
-      fileName,
+      id: result.rows[0].id,
       duration,
       format,
-      creationDate,
-      wavFile,
+      creationDate: result.rows[0].creation_date,
+      wavFile: result.rows[0].waveFile,
     };
   }
   catch(error: unknown) {

@@ -20,40 +20,31 @@ type wavControllerBodyParams = {
   fileName: string;
   duration: number;
   format: string;
-  creationDate: number;
   wavFile: string;
 };
 
-wavRouter.post("/", ensureAuthenticate, createWav);
+wavRouter.post("/create", createWav);
 wavRouter.get("/", ensureAuthenticate, getWavById); // probably dont need ensure TODO think about endpoints.
 wavRouter.get("/", ensureAuthenticate, getAllWavFilesByUserId);
 wavRouter.put("/", ensureAuthenticate, updateWav); // do the conditionals in the model
 wavRouter.delete("/", ensureAuthenticate, deleteWav); // do the conditionals in the model
 
 async function createWav(req: Request, res: Response): Promise<any> {
-  const { wavId, fileName, duration, format, creationDate, wavFile } =
-    req.body as wavControllerBodyParams;
-  if (!req.user) {
-    return res.status(401).json({ message: "unauthorized" });
-  }
+  console.log("Request body:", req.body);
+
+  const { duration, format } = req.body as wavControllerBodyParams;
+  // if (!req.wav) {
+  //   return res.status(401).json({ message: "unauthorized" });
+  // }
 
   try {
-    validateWavId(wavId);
+    // validateFileName(fileName);
 
-    validateFileName(fileName);
-
-    validateDuration(duration);
+    // validateDuration(duration);
 
     validateFormat(format);
 
-    const newWav = await db.Models.Wavs.createWav(
-      wavId,
-      fileName,
-      duration,
-      format,
-      creationDate,
-      wavFile
-    );
+    const newWav = await db.Models.Wavs.createWav(duration, format);
     res.status(201).json({ newWav });
   } catch (error) {
     console.error("error creating wav file:", error);

@@ -11,6 +11,7 @@ export const transporter = createTransport({
   },
 });
 
+// This is for logging, due to my node mailer issue.
 await transporter.sendMail({
   from: '"Your App" <.com>',
   to: "user@example.com",
