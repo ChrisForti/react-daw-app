@@ -10,3 +10,10 @@ export const transporter = createTransport({
     pass: nodemailerPassword,
   },
 });
+
+await transporter.sendMail({
+  from: '"Your App" <.com>',
+  to: "user@example.com",
+  subject: "Password Reset",
+  text: "Here is your password reset link...",
+});
