@@ -159,10 +159,9 @@ This design allows your API to efficiently access and manage both metadata and a
 
 - storing a wav
 
-  - curl -X POST http://localhost:3000/api/wavs \
+  - curl -X POST http://localhost:3000/wavs/create \
     -H "Content-Type: multipart/form-data" \
-    -F "wavId=1" \
     -F "fileName=Yahuha.wav" \
-    -F "duration=3:44" \
+    -F "duration=244" \
     -F "format=wav" \
     -F "wavFile=@./Yahuha.wav"
