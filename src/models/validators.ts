@@ -56,9 +56,12 @@ export function validateFileName(fileName: string) {
   }
 }
 
-export function validateDuration(duration: number) {
-  if (!Number.isInteger(duration) || duration < 1) {
-    throw new Error("duration is missing");
+export function validateDuration(duration: string | number): void {
+  const parsedDuration =
+    typeof duration === "string" ? parseInt(duration, 10) : duration;
+
+  if (isNaN(parsedDuration) || parsedDuration <= 0) {
+    throw new Error("Invalid duration value");
   }
 }
 
