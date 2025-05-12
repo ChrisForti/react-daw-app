@@ -39,7 +39,7 @@ async function createUser(req: Request, res: Response) {
 
     validatePassword(password);
 
-    const newUser = await db.Models.Users.createUser(
+    const newUser = await db.Models.User.createUser(
       firstName,
       lastName,
       email,
@@ -65,7 +65,7 @@ async function loginUser(req: Request, res: Response) {
 
     validatePassword(password);
 
-    const user = await db.Models.Users.getUserByEmail(email);
+    const user = await db.Models.User.getUserByEmail(email);
 
     if (!user) {
       res.status(401).json({ message: "Invalid email or password" });
@@ -105,7 +105,7 @@ async function getUserById(req: Request, res: Response) {
       res.status(400).json({ message: "User ID is required" });
       return;
     }
-    const user = await db.Models.Users.getUserById(userId);
+    const user = await db.Models.User.getUserById(userId);
     res.status(200).json(user);
   } catch (error) {
     if (error instanceof Error) {
@@ -132,7 +132,7 @@ async function updateUser(req: Request, res: Response) {
       validateName(email!, firstName!);
     }
 
-    const updatedUser = db.Models.Users.updateUser(
+    const updatedUser = db.Models.User.updateUser(
       userId,
       email,
       firstName,
@@ -155,7 +155,7 @@ async function deleteUser(req: Request, res: Response) {
 
   try {
     validateId(userId);
-    const deletedUserId = db.Models.Users.deleteUser(userId);
+    const deletedUserId = db.Models.User.deleteUser(userId);
     res.status(200).json(deletedUserId);
   } catch (err) {
     if (err instanceof Error) {
@@ -172,7 +172,7 @@ async function sendResetEmail(req: Request, res: Response) {
   try {
     validateEmail(email);
 
-    const user = await db.Models.Users.getUserByEmail(email);
+    const user = await db.Models.User.getUserByEmail(email);
 
     const resetToken = await db.Models.Tokens.generatePasswordResetToken(
       user.id
@@ -230,7 +230,7 @@ async function updatePassword(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Update user password in the database
-    await db.Models.Users.updatePassword(user.id, hashedPassword);
+    await db.Models.User.updatePassword(user.id, hashedPassword);
 
     res.status(200).json({ message: "Password updated successfully" });
     return;

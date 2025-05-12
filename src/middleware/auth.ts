@@ -46,7 +46,7 @@ export async function authenticate(
     next(); // Proceed to next middleware
   } catch (error) {
     res.status(401).json("Error during token authentication");
-    next();
+    console.error("Authentication error:", error);
   }
 }
 export function ensureAuthenticate(
