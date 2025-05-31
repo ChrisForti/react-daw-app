@@ -65,12 +65,17 @@ export function validateDuration(duration: string | number): void {
   }
 }
 
-export function validateFormat(format: string) {
+export function validateFormat(format: string): void {
+  const validFormats = ["wav", "mp3", "flac"]; // Define valid formats
+
   if (!format) {
-    throw new Error("expiration date is missing");
+    throw new Error("Format is missing");
   }
-  if (format && isNaN(parseInt(format))) {
-    throw new Error("expiration date is missing");
+
+  if (!validFormats.includes(format.toLowerCase())) {
+    throw new Error(
+      `Invalid format. Allowed formats are: ${validFormats.join(", ")}`
+    );
   }
 }
 
