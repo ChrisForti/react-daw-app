@@ -2,7 +2,7 @@ import pg from "pg";
 import bcrypt from "bcrypt";
 import assert from "assert";
 
-export class Users {
+export class User {
   private pool: pg.Pool;
 
   constructor(pool: pg.Pool) {
